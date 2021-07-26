@@ -4,6 +4,7 @@
     name="countries"
     v-model="selected"
     class="
+      cursor-pointer
       block
       bg-gray-200
       border border-gray-200
