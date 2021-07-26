@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-y-auto max-h-96 max-w-3xl sm:rounded-lg shadow">
+  <div class="overflow-y-auto max-h-96 max-w-3xl sm:rounded-lg shadow mb-4">
     <table
       class="
         table-auto
@@ -8,7 +8,6 @@
         overflow-hidden
         border-b border-gray-200
         sm:rounded-lg
-        mb-4
         w-full
       "
     >
