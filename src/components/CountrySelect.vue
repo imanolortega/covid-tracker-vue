@@ -15,6 +15,7 @@
       rounded
       focus:outline-none
       focus:bg-white
+      shadow-sm
     "
   >
     <option value="0">Select Country</option>
