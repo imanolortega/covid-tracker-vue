@@ -1,18 +1,87 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <main v-if="!loading">
+    <DataTitle :text="title" :dataDate="dataDate" />
+    <DataBoxes :stats="stats" />
+    <CountrySelect @get-country="getCountryData" :countries="countries" />
+    <button
+      v-if="stats.Country"
+      @click="clearCountryData"
+      class="
+        bg-purple-500
+        hover:bg-purple-700
+        text-white
+        font-medium
+        tracking-wider
+        mt-4
+        py-2
+        px-4
+        rounded
+      "
+    >
+      Clear Country
+    </button>
+  </main>
+
+  <main v-else class="flex flex-col align-center justify-center">
+    <div class="text-gray-500 font-semibold text-center mt-10 mb-6">
+      Loading...
+    </div>
+    <div class="flex align-center justify-center">
+      <svg
+        class="bg-purple-400 animate-spin h-7 w-7 mr-3 rounded-md"
+        viewBox="0 0 24 24"
+      ></svg>
+    </div>
+  </main>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import DataTitle from "@/components/DataTitle";
+import DataBoxes from "../components/DataBoxes.vue";
+import CountrySelect from "../components/CountrySelect.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    HelloWorld
-  }
-}
+    DataTitle,
+    DataBoxes,
+    CountrySelect,
+  },
+  data() {
+    DataBoxes;
+    return {
+      loading: true,
+      title: "Global",
+      dataDate: "",
+      stats: "",
+      countries: [],
+      loadingImage: require("../assets/spinner.gif"),
+    };
+  },
+  methods: {
+    async fetchCovidData() {
+      const res = await fetch("https://api.covid19api.com/summary");
+      const data = await res.json();
+      return data;
+    },
+    getCountryData(country) {
+      this.stats = country;
+      this.title = country.Country;
+    },
+    async clearCountryData() {
+      this.loading = true;
+      const data = await this.fetchCovidData();
+      this.title = "Global";
+      this.stats = data.Global;
+      this.loading = false;
+    },
+  },
+  async created() {
+    const data = await this.fetchCovidData();
+    this.dataDate = data.Date;
+    this.stats = data.Global;
+    this.countries = data.Countries;
+    this.loading = false;
+  },
+};
 </script>
