@@ -12,7 +12,7 @@
         text-white
         font-medium
         tracking-wider
-        mt-4
+        mb-4
         py-2
         px-4
         rounded
@@ -20,6 +20,7 @@
     >
       Clear Country
     </button>
+    <CountriesTable :countries="countries" />
   </main>
 
   <main v-else class="flex flex-col align-center justify-center">
@@ -39,6 +40,7 @@
 import DataTitle from "@/components/DataTitle";
 import DataBoxes from "../components/DataBoxes.vue";
 import CountrySelect from "../components/CountrySelect.vue";
+import CountriesTable from "../components/CountriesTable.vue";
 
 export default {
   name: "Home",
@@ -46,9 +48,9 @@ export default {
     DataTitle,
     DataBoxes,
     CountrySelect,
+    CountriesTable,
   },
   data() {
-    DataBoxes;
     return {
       loading: true,
       title: "Global",
@@ -60,6 +62,7 @@ export default {
   },
   methods: {
     async fetchCovidData() {
+      console.log(this.stats);
       const res = await fetch("https://api.covid19api.com/summary");
       const data = await res.json();
       return data;

@@ -9,6 +9,7 @@
       border border-gray-200
       text-gray-700
       mt-4
+      mb-4
       py-3
       px-4
       pr-8
@@ -28,7 +29,7 @@
 <script>
 export default {
   name: "CountrySelect",
-  props: ["countries"],
+  props: ["countries", "global"],
   data() {
     return {
       selected: 0,
