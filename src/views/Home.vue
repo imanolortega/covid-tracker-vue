@@ -1,8 +1,8 @@
 <template>
   <main v-if="!loading">
     <DataTitle :text="title" :dataDate="dataDate" />
-    <DataBoxes :stats="stats" />
     <CountrySelect @get-country="getCountryData" :countries="countries" />
+    <DataBoxes :stats="stats" />
     <button
       v-if="stats.Country"
       @click="clearCountryData"

@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-y-auto max-h-96 max-w-3xl sm:rounded-lg shadow mb-4">
+  <div class="overflow-y-auto max-h-96 w-full sm:rounded-lg shadow mb-4">
     <table
       class="
         table-auto
@@ -51,9 +51,9 @@
       <tbody class="bg-gray-50 divide-y divide-gray-300">
         <tr v-for="country in sortedData" :value="country.ID">
           <td class="px-5 py-2">{{ country.Country }}</td>
-          <td class="px-5 py-2">{{ country.NewConfirmed }}</td>
-          <td class="px-5 py-2">{{ country.NewRecovered }}</td>
-          <td class="px-5 py-2">{{ country.NewDeaths }}</td>
+          <td class="px-5 py-2">{{ numberWithDots(country.NewConfirmed) }}</td>
+          <td class="px-5 py-2">{{ numberWithDots(country.NewRecovered) }}</td>
+          <td class="px-5 py-2">{{ numberWithDots(country.NewDeaths) }}</td>
         </tr>
       </tbody>
     </table>
@@ -78,6 +78,9 @@ export default {
     this.sortedData.sort((a, b) => (a.NewConfirmed > b.NewConfirmed ? -1 : 1));
   },
   methods: {
+    numberWithDots(x) {
+      return x.toLocaleString("de-DE");
+    },
     handleSorted(event) {
       //sorted countries
       if (event.target.id === "countries" && this.clickCountries == false) {

@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <h2 class="text-xl text-gray-600 font-bold">{{ text }} Cases</h2>
-    <div class="text-md mt-4 mb-10 text-purple-500 font-medium">
+    <div class="text-md mt-4 mb-4 text-purple-500 font-medium">
       {{ timestamp }}
     </div>
   </div>

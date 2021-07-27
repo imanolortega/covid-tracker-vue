@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <div class="container"><router-view /></div>
+  <div class="container md:pl-16 md:pr-16"><router-view /></div>
 </template>
 
 <script>
