@@ -1,25 +1,30 @@
 <template>
   <main v-if="!loading">
     <DataTitle :text="title" :dataDate="dataDate" />
-    <CountrySelect @get-country="getCountryData" :countries="countries" />
+    <div class="flex items-center">
+      <CountrySelect @get-country="getCountryData" :countries="countries" />
+      <button
+        v-if="stats.Country"
+        @click="clearCountryData"
+        class="
+          bg-purple-500
+          hover:bg-purple-700
+          text-white
+          font-medium
+          tracking-wider
+          ml-4
+          py-2
+          px-4
+          rounded
+          flex
+          items-center
+        "
+      >
+        Clear Country
+      </button>
+    </div>
     <DataBoxes :stats="stats" />
-    <button
-      v-if="stats.Country"
-      @click="clearCountryData"
-      class="
-        bg-purple-500
-        hover:bg-purple-700
-        text-white
-        font-medium
-        tracking-wider
-        mb-4
-        py-2
-        px-4
-        rounded
-      "
-    >
-      Clear Country
-    </button>
+
     <CountriesTable :countries="countries" />
   </main>
 
