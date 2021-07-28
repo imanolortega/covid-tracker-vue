@@ -18,7 +18,7 @@ export default {
       myMap.setView([props.lat, props.lng], 5);
     };
     onMounted(() => {
-      myMap = leaflet.map("mapid").setView([34.974772, -5.604206], 2);
+      myMap = leaflet.map("mapid").setView([props.lat, props.lng], 2);
       leaflet
         .tileLayer(
           `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaW1hbm9scnRlZ2EiLCJhIjoiY2tyMmFveWc2MHBmeTJ1dGNlNWt6dDAzcCJ9.Z_kSKUi-qSNH1yWXqiYxtQ`,
