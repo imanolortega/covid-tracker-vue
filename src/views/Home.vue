@@ -67,8 +67,14 @@ export default {
       countries: [],
       loadingImage: require("../assets/spinner.gif"),
       slug: "",
-      lat: 30.022361,
-      lng: -15.576473,
+      lat: 34.974772,
+      lng: -5.604206,
+      country: {
+        name: "",
+        cases: "",
+        lat: "",
+        lng: "",
+      },
     };
   },
   methods: {

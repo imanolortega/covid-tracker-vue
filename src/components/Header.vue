@@ -1,7 +1,6 @@
 <template>
   <header
     class="
-      text-center
       font-bold
       text-xl
       bg-covid-gradient
@@ -9,9 +8,14 @@
       p-4
       mb-10
       tracking-wider
+      flex
+      items-center
+      justify-center
+      space-x-2
     "
   >
-    <div>Covid Tracker</div>
+    <i class="fas fa-virus"></i>
+    <div>COVID-19 Tracker</div>
   </header>
 </template>
 
