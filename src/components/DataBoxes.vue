@@ -1,5 +1,5 @@
 <template>
-  <div class="grid md:grid-cols-2 gap-4 mb-8">
+  <div class="grid md:grid-cols-2 gap-4 mb-4">
     <div class="bg-gray-200 rounded-md p-10 text-center shadow-md">
       <h3 class="text-md text-gray-600 font-bold mb-4">Cases Today</h3>
       <div>

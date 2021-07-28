@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-y-auto max-h-96 w-full sm:rounded-lg shadow mb-4">
+  <div class="overflow-y-auto max-h-96 w-full sm:rounded-lg shadow mb-12">
     <table
       class="
         table-auto

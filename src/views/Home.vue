@@ -24,7 +24,7 @@
       </button>
     </div>
     <DataBoxes :stats="stats" />
-
+    <MapContainer :lat="lat" :lng="lng" />
     <CountriesTable :countries="countries" />
   </main>
 
@@ -46,6 +46,7 @@ import DataTitle from "@/components/DataTitle";
 import DataBoxes from "../components/DataBoxes.vue";
 import CountrySelect from "../components/CountrySelect.vue";
 import CountriesTable from "../components/CountriesTable.vue";
+import MapContainer from "../components/MapContainer.vue";
 
 export default {
   name: "Home",
@@ -54,7 +55,9 @@ export default {
     DataBoxes,
     CountrySelect,
     CountriesTable,
+    MapContainer,
   },
+  Map,
   data() {
     return {
       loading: true,
@@ -63,11 +66,13 @@ export default {
       stats: "",
       countries: [],
       loadingImage: require("../assets/spinner.gif"),
+      slug: "",
+      lat: 30.022361,
+      lng: -15.576473,
     };
   },
   methods: {
     async fetchCovidData() {
-      console.log(this.stats);
       const res = await fetch("https://api.covid19api.com/summary");
       const data = await res.json();
       return data;
@@ -75,6 +80,17 @@ export default {
     getCountryData(country) {
       this.stats = country;
       this.title = country.Country;
+      this.slug = country.Slug;
+      this.getLatLng(this.slug);
+    },
+    async getLatLng(slug) {
+      const res = await fetch(
+        `https://api.covid19api.com/dayone/country/${slug}/status/confirmed`
+      );
+      const data = await res.json();
+      this.lat = data[0].Lat;
+      this.lng = data[0].Lon;
+      return data;
     },
     async clearCountryData() {
       this.loading = true;
