@@ -6,19 +6,20 @@
 
 <script>
 import leaflet from "leaflet";
-import { onMounted, watchEffect } from "@vue/runtime-core";
+import { onMounted, watch, watchEffect } from "@vue/runtime-core";
 
 export default {
   name: "MapContainer",
   props: ["lat", "lng"],
   setup(props) {
     let myMap;
+    let market;
     const getMap = () => {
       leaflet.marker([props.lat, props.lng]).addTo(myMap);
-      myMap.setView([props.lat, props.lng], 3);
+      myMap.setView([props.lat, props.lng], 4);
     };
     onMounted(() => {
-      console.log("Mounted!");
+      //console.log("Mounted!");
       myMap = leaflet.map("mapid").setView([30.022361, -15.576473], 3);
       leaflet
         .tileLayer(
@@ -35,7 +36,12 @@ export default {
           }
         )
         .addTo(myMap);
-      getMap();
+      watch(
+        () => props.lat,
+        () => {
+          getMap();
+        }
+      );
     });
 
     return { getMap };

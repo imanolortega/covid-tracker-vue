@@ -98,6 +98,8 @@ export default {
       this.title = "Global";
       this.stats = data.Global;
       this.loading = false;
+      this.lat = 30.022361;
+      this.lng = -15.576473;
     },
   },
   async created() {
