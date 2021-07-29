@@ -1,30 +1,13 @@
 <template>
   <main v-if="!loading">
     <DataTitle :text="title" :dataDate="dataDate" />
-    <div class="flex items-center">
-      <CountrySelect @get-country="getCountryData" :countries="countries" />
-      <button
-        v-if="stats.Country"
-        @click="clearCountryData"
-        class="
-          bg-purple-500
-          hover:bg-purple-700
-          text-white
-          font-medium
-          tracking-wider
-          ml-4
-          py-2
-          px-4
-          rounded
-          flex
-          items-center
-        "
-      >
-        Clear Country
-      </button>
-    </div>
+    <CountrySelect
+      @get-country="getCountryData"
+      @get-global="getGlobalData"
+      :countries="countries"
+    />
     <DataBoxes :stats="stats" />
-    <MapContainer :lat="lat" :lng="lng" />
+    <MapContainer :country="country" :countries="countries" />
     <CountriesTable :countries="countries" />
   </main>
 
@@ -65,54 +48,54 @@ export default {
       dataDate: "",
       stats: "",
       countries: [],
-      loadingImage: require("../assets/spinner.gif"),
-      slug: "",
-      lat: 34.974772,
-      lng: -5.604206,
       country: {
         name: "",
         cases: "",
-        lat: "",
-        lng: "",
+        lat: 34.974772,
+        lng: -5.604206,
+        scale: 3,
       },
     };
   },
   methods: {
-    async fetchCovidData() {
-      const res = await fetch("https://api.covid19api.com/summary");
+    async fetchCovidData(url) {
+      const res = await fetch(url);
       const data = await res.json();
       return data;
     },
-    getCountryData(country) {
-      this.stats = country;
-      this.title = country.Country;
-      this.slug = country.Slug;
-      this.getLatLng(this.slug);
-    },
-    async getLatLng(slug) {
-      const res = await fetch(
-        `https://api.covid19api.com/dayone/country/${slug}/status/confirmed`
+    async getCountryData(country) {
+      const countryData = await this.fetchCovidData(
+        `https://disease.sh/v3/covid-19/countries/${country.countryInfo.iso2}`
       );
-      const data = await res.json();
-      this.lat = data[0].Lat;
-      this.lng = data[0].Lon;
-      return data;
+      this.stats = countryData;
+      this.title = country.country;
+      this.country.name = country.country;
+      this.country.cases = country.cases;
+      this.country.lat = country.countryInfo.lat;
+      this.country.lng = country.countryInfo.long;
+      this.country.scale = 5;
     },
-    async clearCountryData() {
-      this.loading = true;
-      const data = await this.fetchCovidData();
+    async getGlobalData() {
+      const globalData = await this.fetchCovidData(
+        "https://disease.sh/v3/covid-19/all"
+      );
       this.title = "Global";
-      this.stats = data.Global;
-      this.loading = false;
-      this.lat = 30.022361;
-      this.lng = -15.576473;
+      this.stats = globalData;
+      this.country.lat = 30.022361;
+      this.country.lng = -15.576473;
+      this.country.scale = 3;
     },
   },
   async created() {
-    const data = await this.fetchCovidData();
-    this.dataDate = data.Date;
-    this.stats = data.Global;
-    this.countries = data.Countries;
+    const globalData = await this.fetchCovidData(
+      "https://disease.sh/v3/covid-19/all"
+    );
+    const countriesData = await this.fetchCovidData(
+      "https://disease.sh/v3/covid-19/countries"
+    );
+    this.dataDate = new Date();
+    this.stats = globalData;
+    this.countries = countriesData;
     this.loading = false;
   },
 };

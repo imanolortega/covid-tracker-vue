@@ -20,9 +20,9 @@
       shadow-sm
     "
   >
-    <option value="0">Select Country</option>
-    <option v-for="country in countries" :value="country.ID">
-      {{ country.Country }}
+    <option :value="0">Global</option>
+    <option v-for="country in countries" :value="country.countryInfo.iso2">
+      {{ country.country }}
     </option>
   </select>
 </template>
@@ -38,8 +38,14 @@ export default {
   },
   methods: {
     onChange() {
-      const country = this.countries.find((item) => item.ID === this.selected);
-      this.$emit("get-country", country);
+      if (this.selected === 0) {
+        this.$emit("get-global");
+      } else {
+        const country = this.countries.find(
+          (item) => item.countryInfo.iso2 === this.selected
+        );
+        this.$emit("get-country", country);
+      }
     },
   },
 };

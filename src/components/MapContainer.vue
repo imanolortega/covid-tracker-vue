@@ -10,15 +10,19 @@ import { onMounted, watch } from "@vue/runtime-core";
 
 export default {
   name: "MapContainer",
-  props: ["lat", "lng"],
+  props: ["country", "countries"],
   setup(props) {
     let myMap;
     const getMap = () => {
-      //leaflet.marker([props.lat, props.lng]).addTo(myMap);
-      myMap.setView([props.lat, props.lng], 5);
+      myMap.setView(
+        [props.country.lat, props.country.lng],
+        props.country.scale
+      );
     };
     onMounted(() => {
-      myMap = leaflet.map("mapid").setView([props.lat, props.lng], 2);
+      myMap = leaflet
+        .map("mapid")
+        .setView([props.country.lat, props.country.lng], props.country.scale);
       leaflet
         .tileLayer(
           `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaW1hbm9scnRlZ2EiLCJhIjoiY2tyMmFveWc2MHBmeTJ1dGNlNWt6dDAzcCJ9.Z_kSKUi-qSNH1yWXqiYxtQ`,
@@ -34,8 +38,45 @@ export default {
           }
         )
         .addTo(myMap);
+      props.countries.forEach((c) => {
+        let covidCircle = {
+          radius: 0.03 * c.cases,
+          fillColor: "rgb(240, 77, 77)",
+          color: "rgb(240, 77, 77)",
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 0.7,
+        };
+        leaflet
+          .circle([c.countryInfo.lat, c.countryInfo.long], covidCircle)
+          .addTo(myMap).bindPopup(`
+          <div>
+          <p class="font-sans"><span class="font-semibold">Country:</span> ${
+            c.country
+          }</p>
+          <p class="font-sans"><span class="font-semibold">Cases:</span> ${c.cases.toLocaleString(
+            "de-DE"
+          )}</p>
+          <p class="font-sans"><span class="font-semibold">Recovered:</span> ${c.recovered.toLocaleString(
+            "de-DE"
+          )}</p>
+          <p class="font-sans"><span class="font-semibold">Deaths:</span> ${c.deaths.toLocaleString(
+            "de-DE"
+          )}</p>
+          <p class="font-sans"><span class="font-semibold">New Today:</span> ${c.todayCases.toLocaleString(
+            "de-DE"
+          )}</p>
+          <p class="font-sans"><span class="font-semibold">New Deaths:</span> ${c.todayDeaths.toLocaleString(
+            "de-DE"
+          )}</p>
+          <p class="font-sans"><span class="font-semibold">Newly Recovered:</span> ${c.todayRecovered.toLocaleString(
+            "de-DE"
+          )}</p>
+          </div>
+          `);
+      });
       watch(
-        () => props.lat,
+        () => props.country.lat,
         () => {
           getMap();
         }
@@ -48,4 +89,7 @@ export default {
 </script>
 
 <style>
+.leaflet-popup-content p {
+  margin: 0;
+}
 </style>
